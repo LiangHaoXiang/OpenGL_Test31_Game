@@ -17,6 +17,7 @@
 		ABFB8A5F26CF710100842864 /* Texture2D.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ABFB8A5D26CF710100842864 /* Texture2D.cpp */; };
 		ABFB8A6026CF786600842864 /* libGLEW.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = ABFB8A3326CF426200842864 /* libGLEW.dylib */; };
 		ABFB8A6426CF7F5400842864 /* ResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ABFB8A6126CF7F5400842864 /* ResourceManager.cpp */; };
+		ABFB8A6D26CF91EB00842864 /* SpriteRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ABFB8A6B26CF91EB00842864 /* SpriteRenderer.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -48,6 +49,10 @@
 		ABFB8A6126CF7F5400842864 /* ResourceManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceManager.cpp; sourceTree = "<group>"; };
 		ABFB8A6226CF7F5400842864 /* ResourceManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ResourceManager.hpp; sourceTree = "<group>"; };
 		ABFB8A6526CF827100842864 /* stb_image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stb_image.h; sourceTree = "<group>"; };
+		ABFB8A6926CF8F5A00842864 /* sprite.fs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = sprite.fs; sourceTree = "<group>"; };
+		ABFB8A6A26CF8F5A00842864 /* sprite.vs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = sprite.vs; sourceTree = "<group>"; };
+		ABFB8A6B26CF91EB00842864 /* SpriteRenderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteRenderer.cpp; sourceTree = "<group>"; };
+		ABFB8A6C26CF91EB00842864 /* SpriteRenderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SpriteRenderer.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +90,9 @@
 		ABFB8A2826CF421D00842864 /* OpenGL_Test31_Game */ = {
 			isa = PBXGroup;
 			children = (
+				ABFB8A2926CF421D00842864 /* main.cpp */,
+				ABFB8A6826CF8F5A00842864 /* Shaders */,
+				ABFB8A3926CF43D800842864 /* glad.c */,
 				ABFB8A6526CF827100842864 /* stb_image.h */,
 				ABFB8A6226CF7F5400842864 /* ResourceManager.hpp */,
 				ABFB8A6126CF7F5400842864 /* ResourceManager.cpp */,
@@ -94,8 +102,8 @@
 				ABFB8A5126CF6FAD00842864 /* Game.cpp */,
 				ABFB8A4F26CF6AA300842864 /* Shader.hpp */,
 				ABFB8A4E26CF6AA300842864 /* Shader.cpp */,
-				ABFB8A3926CF43D800842864 /* glad.c */,
-				ABFB8A2926CF421D00842864 /* main.cpp */,
+				ABFB8A6C26CF91EB00842864 /* SpriteRenderer.hpp */,
+				ABFB8A6B26CF91EB00842864 /* SpriteRenderer.cpp */,
 			);
 			path = OpenGL_Test31_Game;
 			sourceTree = "<group>";
@@ -109,6 +117,15 @@
 				ABFB8A3126CF425600842864 /* libassimp.dylib */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		ABFB8A6826CF8F5A00842864 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				ABFB8A6A26CF8F5A00842864 /* sprite.vs */,
+				ABFB8A6926CF8F5A00842864 /* sprite.fs */,
+			);
+			path = Shaders;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -173,6 +190,7 @@
 				ABFB8A3A26CF43D800842864 /* glad.c in Sources */,
 				ABFB8A5326CF6FAD00842864 /* Game.cpp in Sources */,
 				ABFB8A6426CF7F5400842864 /* ResourceManager.cpp in Sources */,
+				ABFB8A6D26CF91EB00842864 /* SpriteRenderer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
