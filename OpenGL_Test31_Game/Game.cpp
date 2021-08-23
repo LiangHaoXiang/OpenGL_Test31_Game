@@ -10,6 +10,7 @@
 #include "ResourceManager.hpp"
 #include <GLFW/glfw3.h>
 #include "BallObject.hpp"
+#include "ParticleGenerator.hpp"
 
 using namespace glm;
 
@@ -27,6 +28,7 @@ const vec2 INITIAL_BALL_VELOCITY(100.0f, -350.0f);
 const float BALL_RADIUS = 12.5f;
 
 BallObject *Ball;
+ParticleGenerator *Particles;
 
 //球体碰撞砖块的方向
 enum Direction {
@@ -61,6 +63,13 @@ void Game::Init()
     shader.Use();
     shader.SetInteger("image", 0);
     shader.SetMatrix4("projection", projection);
+    
+    string p3 = "/Users/haoxiangliang/Desktop/代码草稿/OpenGL/OpenGL_Test31_Game/OpenGL_Test31_Game/Shaders/particle.vs";
+    string p4 = "/Users/haoxiangliang/Desktop/代码草稿/OpenGL/OpenGL_Test31_Game/OpenGL_Test31_Game/Shaders/particle.fs";
+    Shader particleShader = ResourceManager::LoadShader(p3.c_str(), p4.c_str(), nullptr, "particle");
+    particleShader.Use();
+    particleShader.SetMatrix4("projection", projection);
+    
     //加载纹理
     ResourceManager::LoadTexture("/Users/haoxiangliang/Desktop/未命名文件夹/background.jpg", GL_FALSE, "background");
     ResourceManager::LoadTexture("/Users/haoxiangliang/Desktop/未命名文件夹/awesomeface.png", GL_TRUE, "face");
@@ -69,6 +78,8 @@ void Game::Init()
     ResourceManager::LoadTexture("/Users/haoxiangliang/Desktop/未命名文件夹/paddle.png", true, "paddle");
     Renderer = new SpriteRenderer(shader);
     
+    ResourceManager::LoadTexture("/Users/haoxiangliang/Desktop/未命名文件夹/particle.png", true, "particle");
+    Particles = new ParticleGenerator(ResourceManager::GetShader("particle"), ResourceManager::GetTexture("particle"), 500);
     //加载关卡
     GameLevel lv1, lv2, lv3, lv4;
     lv1.Load("/Users/haoxiangliang/Desktop/未命名文件夹/GameLevel/gameLv_1.txt", this->Width, this->Height * 0.5);
@@ -107,6 +118,8 @@ void Game::Update(float dt)
 {
     // 更新对象
     Ball->Move(dt, this->Width);
+    // Update particles
+    Particles->Update(dt, *Ball, 2, vec2(Ball->Radius / 2));
     // 检测碰撞
     this->DoCollisions();
     // 球是否接触底部边界？
@@ -165,6 +178,8 @@ void Game::Render()
         this->Levels[this->Level - 1].Draw(*Renderer);
         // 绘制玩家挡板
         Player->Draw(*Renderer);
+        // 绘制粒子特效
+        Particles->Draw();
         // 绘制球
         Ball->Draw(*Renderer);
     }
