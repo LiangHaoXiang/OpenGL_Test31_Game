@@ -28,6 +28,18 @@ const float BALL_RADIUS = 12.5f;
 
 BallObject *Ball;
 
+//球体碰撞砖块的方向
+enum Direction {
+    UP,
+    RIGHT,
+    DOWN,
+    LEFT
+};
+
+typedef tuple<bool, Direction, vec2> Collision;
+Collision CheckCollision(BallObject &one, GameObject &two);
+Direction VectorDirection(vec2 target);
+
 Game::Game(int width, int height): State(GAME_ACTIVE), Keys(), Width(width), Height(height)
 {
     
@@ -35,7 +47,9 @@ Game::Game(int width, int height): State(GAME_ACTIVE), Keys(), Width(width), Hei
 
 Game::~Game()
 {
-    
+    delete Renderer;
+    delete Player;
+    delete Ball;
 }
 
 void Game::Init()
@@ -76,29 +90,60 @@ void Game::Init()
     Ball = new BallObject(ballPos, BALL_RADIUS, INITIAL_BALL_VELOCITY, ResourceManager::GetTexture("face"));
 }
 
+void Game::ResetLevel()
+{
+    this->Levels[this->Level - 1].Load("/Users/haoxiangliang/Desktop/未命名文件夹/GameLevel/gameLv_" + to_string(this->Level) + ".txt", this->Width, this->Height * 0.5f);
+}
+
+void Game::ResetPlayer()
+{
+    // Reset player/ball stats
+    Player->Size = PLAYER_SIZE;
+    Player->Position = vec2(this->Width / 2 - PLAYER_SIZE.x / 2, this->Height - PLAYER_SIZE.y);
+    Ball->Reset(Player->Position + vec2(PLAYER_SIZE.x / 2 - BALL_RADIUS, -(BALL_RADIUS * 2)), INITIAL_BALL_VELOCITY);
+}
+
 void Game::Update(float dt)
 {
     // 更新对象
     Ball->Move(dt, this->Width);
     // 检测碰撞
     this->DoCollisions();
+    // 球是否接触底部边界？
+    if (Ball->Position.y >= this->Height)
+    {
+        this->ResetLevel();
+        this->ResetPlayer();
+    }
 }
 
 void Game::ProcessInput(float dt)
 {
     if (this->State == GAME_ACTIVE)
     {
-        GLfloat velocity = PLAYER_VELOCITY * dt;
+        float velocity = PLAYER_VELOCITY * dt;
         // 移动挡板
         if (this->Keys[GLFW_KEY_A])
         {
             if (Player->Position.x >= 0)
+            {
                 Player->Position.x -= velocity;
+                if (Ball->Stuck)
+                {
+                    Ball->Position.x -= velocity;
+                }
+            }
         }
         if (this->Keys[GLFW_KEY_D])
         {
             if (Player->Position.x <= this->Width - Player->Size.x)
+            {
                 Player->Position.x += velocity;
+                if (Ball->Stuck)
+                {
+                    Ball->Position.x += velocity;
+                }
+            }
         }
         if (this->Keys[GLFW_KEY_SPACE])
         {
@@ -125,6 +170,61 @@ void Game::Render()
     }
 }
 
+void Game::DoCollisions()
+{
+    for (GameObject &box : this->Levels[this->Level - 1].Bricks)
+    {
+        if (!box.Destroyed)
+        {
+            Collision collision = CheckCollision(*Ball, box);
+            if (std::get<0>(collision)) // 如果collision 是 true
+            {
+                // 如果砖块不是实心就销毁砖块
+                if (!box.IsSolid)
+                    box.Destroyed = true;
+                // 碰撞处理
+                Direction dir = std::get<1>(collision);
+                vec2 diff_vector = std::get<2>(collision);
+                if (dir == LEFT || dir == RIGHT) // 水平方向碰撞
+                {
+                    Ball->Velocity.x = -Ball->Velocity.x; // 反转水平速度
+                    // 重定位
+                    float penetration = Ball->Radius - std::abs(diff_vector.x);
+                    if (dir == LEFT)
+                        Ball->Position.x += penetration; // 将球右移
+                    else
+                        Ball->Position.x -= penetration; // 将球左移
+                }
+                else // 垂直方向碰撞
+                {
+                    Ball->Velocity.y = -Ball->Velocity.y; // 反转垂直速度
+                    // 重定位
+                    float penetration = Ball->Radius - std::abs(diff_vector.y);
+                    if (dir == UP)
+                        Ball->Position.y -= penetration; // 将球上移
+                    else
+                        Ball->Position.y += penetration; // 将球下移
+                }
+            }
+        }
+    }
+    
+    Collision result = CheckCollision(*Ball, *Player);
+    if (!Ball->Stuck && std::get<0>(result))
+    {
+        // 检查碰到了挡板的哪个位置，并根据碰到哪个位置来改变速度
+        float centerBoard = Player->Position.x + Player->Size.x / 2;
+        float distance = (Ball->Position.x + Ball->Radius) - centerBoard;
+        float percentage = distance / (Player->Size.x / 2);
+        // 依据结果移动
+        float strength = 2.0f;
+        vec2 oldVelocity = Ball->Velocity;
+        Ball->Velocity.x = INITIAL_BALL_VELOCITY.x * percentage * strength;
+        Ball->Velocity.y = -1 * std::abs(Ball->Velocity.y);
+        Ball->Velocity = normalize(Ball->Velocity) * length(oldVelocity);
+    }
+}
+
 //碰撞检测 AABB - AABB collision
 //bool CheckCollision(GameObject &one, GameObject &two)
 //{
@@ -137,7 +237,7 @@ void Game::Render()
 //    // 只有两个轴向都有碰撞时才碰撞
 //    return collisionX && collisionY;
 //}
-bool CheckCollision(BallObject &one, GameObject &two) // AABB - Circle collision
+Collision CheckCollision(BallObject &one, GameObject &two) // AABB - Circle collision
 {
     // 获取圆的中心
     vec2 center(one.Position + one.Radius);
@@ -151,22 +251,34 @@ bool CheckCollision(BallObject &one, GameObject &two) // AABB - Circle collision
     vec2 closest = aabb_center + clamped;
     // 获得圆心center和最近点closest的矢量并判断是否 length <= radius
     difference = closest - center;
-    return length(difference) < one.Radius;
+    if (length(difference) <= one.Radius)
+    {
+        return make_tuple(true, VectorDirection(difference), difference);
+    }
+    else
+    {
+        return make_tuple(false, UP, vec2(0.0f));
+    }
 }
 
-void Game::DoCollisions()
+Direction VectorDirection(vec2 target)
 {
-    for (GameObject &box : this->Levels[this->Level - 1].Bricks)
+    vec2 compass[] = {
+        vec2(0.0f, 1.0f),  // 上
+        vec2(1.0f, 0.0f),  // 右
+        vec2(0.0f, -1.0f), // 下
+        vec2(-1.0f, 0.0f)  // 左
+    };
+    float max = 0.0f;
+    unsigned int best_match = -1;
+    for (unsigned int i = 0; i < 4; i++)
     {
-        if (!box.Destroyed)
+        float dot_product = dot(normalize(target), compass[i]);
+        if (dot_product > max)
         {
-            if (CheckCollision(*Ball, box))
-            {
-                if (!box.IsSolid)
-                {
-                    box.Destroyed = true;
-                }
-            }
+            max = dot_product;
+            best_match = i;
         }
     }
+    return (Direction)best_match;
 }

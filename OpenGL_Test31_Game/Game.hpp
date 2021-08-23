@@ -40,6 +40,9 @@ public:
     void Render();
     //一堆碰撞检测 AABB - AABB collision
     void DoCollisions();
+    // Reset
+    void ResetLevel();
+    void ResetPlayer();
 };
 
 #endif /* Game_hpp */
