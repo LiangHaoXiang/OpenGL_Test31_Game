@@ -20,6 +20,7 @@
 		ABFB8A6D26CF91EB00842864 /* SpriteRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ABFB8A6B26CF91EB00842864 /* SpriteRenderer.cpp */; };
 		ABFB8A7026D1FE9200842864 /* GameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ABFB8A6E26D1FE9200842864 /* GameObject.cpp */; };
 		ABFB8A7326D3331000842864 /* GameLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ABFB8A7126D3331000842864 /* GameLevel.cpp */; };
+		ABFB8A7626D358BA00842864 /* BallObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ABFB8A7426D358BA00842864 /* BallObject.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -59,6 +60,8 @@
 		ABFB8A6F26D1FE9200842864 /* GameObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GameObject.hpp; sourceTree = "<group>"; };
 		ABFB8A7126D3331000842864 /* GameLevel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GameLevel.cpp; sourceTree = "<group>"; };
 		ABFB8A7226D3331000842864 /* GameLevel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GameLevel.hpp; sourceTree = "<group>"; };
+		ABFB8A7426D358BA00842864 /* BallObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BallObject.cpp; sourceTree = "<group>"; };
+		ABFB8A7526D358BA00842864 /* BallObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BallObject.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +115,8 @@
 				ABFB8A6B26CF91EB00842864 /* SpriteRenderer.cpp */,
 				ABFB8A6F26D1FE9200842864 /* GameObject.hpp */,
 				ABFB8A6E26D1FE9200842864 /* GameObject.cpp */,
+				ABFB8A7526D358BA00842864 /* BallObject.hpp */,
+				ABFB8A7426D358BA00842864 /* BallObject.cpp */,
 				ABFB8A7226D3331000842864 /* GameLevel.hpp */,
 				ABFB8A7126D3331000842864 /* GameLevel.cpp */,
 			);
@@ -197,6 +202,7 @@
 				ABFB8A7326D3331000842864 /* GameLevel.cpp in Sources */,
 				ABFB8A7026D1FE9200842864 /* GameObject.cpp in Sources */,
 				ABFB8A5F26CF710100842864 /* Texture2D.cpp in Sources */,
+				ABFB8A7626D358BA00842864 /* BallObject.cpp in Sources */,
 				ABFB8A2A26CF421D00842864 /* main.cpp in Sources */,
 				ABFB8A5026CF6AA300842864 /* Shader.cpp in Sources */,
 				ABFB8A3A26CF43D800842864 /* glad.c in Sources */,
