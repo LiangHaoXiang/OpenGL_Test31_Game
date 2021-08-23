@@ -22,6 +22,7 @@
 		ABFB8A7326D3331000842864 /* GameLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ABFB8A7126D3331000842864 /* GameLevel.cpp */; };
 		ABFB8A7626D358BA00842864 /* BallObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ABFB8A7426D358BA00842864 /* BallObject.cpp */; };
 		ABFB8A7B26D38A8400842864 /* ParticleGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ABFB8A7926D38A8400842864 /* ParticleGenerator.cpp */; };
+		ABFB8A7E26D39EB900842864 /* PostProcessor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ABFB8A7C26D39EB900842864 /* PostProcessor.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -67,6 +68,10 @@
 		ABFB8A7826D38A0100842864 /* particle.fs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = particle.fs; sourceTree = "<group>"; };
 		ABFB8A7926D38A8400842864 /* ParticleGenerator.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ParticleGenerator.cpp; sourceTree = "<group>"; };
 		ABFB8A7A26D38A8400842864 /* ParticleGenerator.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ParticleGenerator.hpp; sourceTree = "<group>"; };
+		ABFB8A7C26D39EB900842864 /* PostProcessor.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = PostProcessor.cpp; sourceTree = "<group>"; };
+		ABFB8A7D26D39EB900842864 /* PostProcessor.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PostProcessor.hpp; sourceTree = "<group>"; };
+		ABFB8A7F26D3A19700842864 /* post_processing.vs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = post_processing.vs; sourceTree = "<group>"; };
+		ABFB8A8026D3A19700842864 /* post_processing.fs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = post_processing.fs; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +131,8 @@
 				ABFB8A7126D3331000842864 /* GameLevel.cpp */,
 				ABFB8A7A26D38A8400842864 /* ParticleGenerator.hpp */,
 				ABFB8A7926D38A8400842864 /* ParticleGenerator.cpp */,
+				ABFB8A7D26D39EB900842864 /* PostProcessor.hpp */,
+				ABFB8A7C26D39EB900842864 /* PostProcessor.cpp */,
 			);
 			path = OpenGL_Test31_Game;
 			sourceTree = "<group>";
@@ -148,6 +155,8 @@
 				ABFB8A6926CF8F5A00842864 /* sprite.fs */,
 				ABFB8A7726D38A0100842864 /* particle.vs */,
 				ABFB8A7826D38A0100842864 /* particle.fs */,
+				ABFB8A7F26D3A19700842864 /* post_processing.vs */,
+				ABFB8A8026D3A19700842864 /* post_processing.fs */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -208,6 +217,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ABFB8A7E26D39EB900842864 /* PostProcessor.cpp in Sources */,
 				ABFB8A7326D3331000842864 /* GameLevel.cpp in Sources */,
 				ABFB8A7026D1FE9200842864 /* GameObject.cpp in Sources */,
 				ABFB8A5F26CF710100842864 /* Texture2D.cpp in Sources */,

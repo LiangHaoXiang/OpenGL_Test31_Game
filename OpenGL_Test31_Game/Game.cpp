@@ -11,6 +11,7 @@
 #include <GLFW/glfw3.h>
 #include "BallObject.hpp"
 #include "ParticleGenerator.hpp"
+#include "PostProcessor.hpp"
 
 using namespace glm;
 
@@ -29,6 +30,9 @@ const float BALL_RADIUS = 12.5f;
 
 BallObject *Ball;
 ParticleGenerator *Particles;
+PostProcessor *Effects;
+
+float ShakeTime = 0.0f;
 
 //球体碰撞砖块的方向
 enum Direction {
@@ -70,6 +74,10 @@ void Game::Init()
     particleShader.Use();
     particleShader.SetMatrix4("projection", projection);
     
+    string p5 = "/Users/haoxiangliang/Desktop/代码草稿/OpenGL/OpenGL_Test31_Game/OpenGL_Test31_Game/Shaders/post_processing.vs";
+    string p6 = "/Users/haoxiangliang/Desktop/代码草稿/OpenGL/OpenGL_Test31_Game/OpenGL_Test31_Game/Shaders/post_processing.fs";
+    Shader processingShader = ResourceManager::LoadShader(p5.c_str(), p6.c_str(), nullptr, "postprocessing");
+    
     //加载纹理
     ResourceManager::LoadTexture("/Users/haoxiangliang/Desktop/未命名文件夹/background.jpg", GL_FALSE, "background");
     ResourceManager::LoadTexture("/Users/haoxiangliang/Desktop/未命名文件夹/awesomeface.png", GL_TRUE, "face");
@@ -79,7 +87,9 @@ void Game::Init()
     Renderer = new SpriteRenderer(shader);
     
     ResourceManager::LoadTexture("/Users/haoxiangliang/Desktop/未命名文件夹/particle.png", true, "particle");
-    Particles = new ParticleGenerator(ResourceManager::GetShader("particle"), ResourceManager::GetTexture("particle"), 500);
+    Particles = new ParticleGenerator(particleShader, ResourceManager::GetTexture("particle"), 500);
+    
+    Effects = new PostProcessor(processingShader, this->Width * 2, this->Height * 2);
     //加载关卡
     GameLevel lv1, lv2, lv3, lv4;
     lv1.Load("/Users/haoxiangliang/Desktop/未命名文件夹/GameLevel/gameLv_1.txt", this->Width, this->Height * 0.5);
@@ -90,7 +100,7 @@ void Game::Init()
     this->Levels.push_back(lv2);
     this->Levels.push_back(lv3);
     this->Levels.push_back(lv4);
-    this->Level = 1;
+    this->Level = 3;
     
     //初始化玩家挡板
     vec2 playerPos = vec2(this->Width / 2 - PLAYER_SIZE.x / 2, this->Height - PLAYER_SIZE.y);
@@ -127,6 +137,15 @@ void Game::Update(float dt)
     {
         this->ResetLevel();
         this->ResetPlayer();
+    }
+    
+    if (ShakeTime > 0.0f)
+    {
+        ShakeTime -= dt;
+        if (ShakeTime <= 0.0f)
+        {
+            Effects->Shake = false;
+        }
     }
 }
 
@@ -167,10 +186,9 @@ void Game::ProcessInput(float dt)
 
 void Game::Render()
 {
-//    Texture2D faceTexture = ResourceManager::GetTexture("face");
-//    Renderer->DrawSprite(faceTexture, vec2(200, 200), vec2(300, 400), 45.0f, vec3(0.0f, 1.0f, 0.0f));
     if (this->State == GAME_ACTIVE)
     {
+        Effects->BeginRender();
         // 绘制背景
         Texture2D bgTexture = ResourceManager::GetTexture("background");
         Renderer->DrawSprite(bgTexture, vec2(0, 0), vec2(this->Width, this->Height), 0.0f);
@@ -182,6 +200,8 @@ void Game::Render()
         Particles->Draw();
         // 绘制球
         Ball->Draw(*Renderer);
+        Effects->EndRender();
+        Effects->Render(glfwGetTime());
     }
 }
 
@@ -196,7 +216,15 @@ void Game::DoCollisions()
             {
                 // 如果砖块不是实心就销毁砖块
                 if (!box.IsSolid)
+                {
                     box.Destroyed = true;
+                }
+                else
+                {
+                    // 如果是实心的砖块则激活shake特效
+                    ShakeTime = 0.05f;
+                    Effects->Shake = true;
+                }
                 // 碰撞处理
                 Direction dir = std::get<1>(collision);
                 vec2 diff_vector = std::get<2>(collision);
