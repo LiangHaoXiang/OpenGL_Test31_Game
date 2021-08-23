@@ -18,6 +18,8 @@
 		ABFB8A6026CF786600842864 /* libGLEW.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = ABFB8A3326CF426200842864 /* libGLEW.dylib */; };
 		ABFB8A6426CF7F5400842864 /* ResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ABFB8A6126CF7F5400842864 /* ResourceManager.cpp */; };
 		ABFB8A6D26CF91EB00842864 /* SpriteRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ABFB8A6B26CF91EB00842864 /* SpriteRenderer.cpp */; };
+		ABFB8A7026D1FE9200842864 /* GameObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ABFB8A6E26D1FE9200842864 /* GameObject.cpp */; };
+		ABFB8A7326D3331000842864 /* GameLevel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = ABFB8A7126D3331000842864 /* GameLevel.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -53,6 +55,10 @@
 		ABFB8A6A26CF8F5A00842864 /* sprite.vs */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; path = sprite.vs; sourceTree = "<group>"; };
 		ABFB8A6B26CF91EB00842864 /* SpriteRenderer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SpriteRenderer.cpp; sourceTree = "<group>"; };
 		ABFB8A6C26CF91EB00842864 /* SpriteRenderer.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = SpriteRenderer.hpp; sourceTree = "<group>"; };
+		ABFB8A6E26D1FE9200842864 /* GameObject.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GameObject.cpp; sourceTree = "<group>"; };
+		ABFB8A6F26D1FE9200842864 /* GameObject.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GameObject.hpp; sourceTree = "<group>"; };
+		ABFB8A7126D3331000842864 /* GameLevel.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GameLevel.cpp; sourceTree = "<group>"; };
+		ABFB8A7226D3331000842864 /* GameLevel.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GameLevel.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -91,6 +97,8 @@
 			isa = PBXGroup;
 			children = (
 				ABFB8A2926CF421D00842864 /* main.cpp */,
+				ABFB8A5226CF6FAD00842864 /* Game.hpp */,
+				ABFB8A5126CF6FAD00842864 /* Game.cpp */,
 				ABFB8A6826CF8F5A00842864 /* Shaders */,
 				ABFB8A3926CF43D800842864 /* glad.c */,
 				ABFB8A6526CF827100842864 /* stb_image.h */,
@@ -98,12 +106,14 @@
 				ABFB8A6126CF7F5400842864 /* ResourceManager.cpp */,
 				ABFB8A5A26CF710100842864 /* Texture2D.hpp */,
 				ABFB8A5D26CF710100842864 /* Texture2D.cpp */,
-				ABFB8A5226CF6FAD00842864 /* Game.hpp */,
-				ABFB8A5126CF6FAD00842864 /* Game.cpp */,
 				ABFB8A4F26CF6AA300842864 /* Shader.hpp */,
 				ABFB8A4E26CF6AA300842864 /* Shader.cpp */,
 				ABFB8A6C26CF91EB00842864 /* SpriteRenderer.hpp */,
 				ABFB8A6B26CF91EB00842864 /* SpriteRenderer.cpp */,
+				ABFB8A6F26D1FE9200842864 /* GameObject.hpp */,
+				ABFB8A6E26D1FE9200842864 /* GameObject.cpp */,
+				ABFB8A7226D3331000842864 /* GameLevel.hpp */,
+				ABFB8A7126D3331000842864 /* GameLevel.cpp */,
 			);
 			path = OpenGL_Test31_Game;
 			sourceTree = "<group>";
@@ -184,6 +194,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ABFB8A7326D3331000842864 /* GameLevel.cpp in Sources */,
+				ABFB8A7026D1FE9200842864 /* GameObject.cpp in Sources */,
 				ABFB8A5F26CF710100842864 /* Texture2D.cpp in Sources */,
 				ABFB8A2A26CF421D00842864 /* main.cpp in Sources */,
 				ABFB8A5026CF6AA300842864 /* Shader.cpp in Sources */,

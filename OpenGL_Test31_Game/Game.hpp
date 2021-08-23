@@ -9,6 +9,7 @@
 #define Game_hpp
 
 #include <stdio.h>
+#include "GameLevel.hpp"
 
 enum GameState
 {
@@ -24,6 +25,10 @@ public:
     GameState State;
     bool Keys[1024];
     int Width, Height;
+    
+    vector<GameLevel> Levels;
+    unsigned int Level;
+
     // 构造函数/析构函数
     Game(int width, int height);
     ~Game();

@@ -38,8 +38,9 @@ Shader ResourceManager::GetShader(string name)
     return Shaders[name];
 }
 
-Texture2D ResourceManager::LoadTexture(const char *file, bool alpha, string name)
+Texture2D ResourceManager::LoadTexture(string path, bool alpha, string name)
 {
+    const char *file = path.c_str();
     Textures[name] = loadTextureFromFile(file, alpha);
     return Textures[name];
 }
