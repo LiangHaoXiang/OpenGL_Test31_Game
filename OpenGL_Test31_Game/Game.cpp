@@ -78,7 +78,10 @@ void Game::Init()
 
 void Game::Update(float dt)
 {
+    // 更新对象
     Ball->Move(dt, this->Width);
+    // 检测碰撞
+    this->DoCollisions();
 }
 
 void Game::ProcessInput(float dt)
@@ -119,5 +122,51 @@ void Game::Render()
         Player->Draw(*Renderer);
         // 绘制球
         Ball->Draw(*Renderer);
+    }
+}
+
+//碰撞检测 AABB - AABB collision
+//bool CheckCollision(GameObject &one, GameObject &two)
+//{
+//    // x轴方向碰撞？
+//    bool collisionX = one.Position.x + one.Size.x >= two.Position.x &&
+//        two.Position.x + two.Size.x >= one.Position.x;
+//    // y轴方向碰撞？
+//    bool collisionY = one.Position.y + one.Size.y >= two.Position.y &&
+//        two.Position.y + two.Size.y >= one.Position.y;
+//    // 只有两个轴向都有碰撞时才碰撞
+//    return collisionX && collisionY;
+//}
+bool CheckCollision(BallObject &one, GameObject &two) // AABB - Circle collision
+{
+    // 获取圆的中心
+    vec2 center(one.Position + one.Radius);
+    // 计算AABB的信息（中心、半边长）
+    vec2 aabb_half_extents(two.Size.x / 2, two.Size.y / 2);
+    vec2 aabb_center(two.Position.x + aabb_half_extents.x, two.Position.y + aabb_half_extents.y);
+    // 获取两个中心的差矢量
+    vec2 difference = center - aabb_center;
+    vec2 clamped = clamp(difference, -aabb_half_extents, aabb_half_extents);
+    // AABB_center加上clamped这样就得到了碰撞箱上距离圆最近的点closest
+    vec2 closest = aabb_center + clamped;
+    // 获得圆心center和最近点closest的矢量并判断是否 length <= radius
+    difference = closest - center;
+    return length(difference) < one.Radius;
+}
+
+void Game::DoCollisions()
+{
+    for (GameObject &box : this->Levels[this->Level - 1].Bricks)
+    {
+        if (!box.Destroyed)
+        {
+            if (CheckCollision(*Ball, box))
+            {
+                if (!box.IsSolid)
+                {
+                    box.Destroyed = true;
+                }
+            }
+        }
     }
 }

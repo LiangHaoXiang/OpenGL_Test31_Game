@@ -38,6 +38,8 @@ public:
     void Update(float dt);
     void ProcessInput(float dt);
     void Render();
+    //一堆碰撞检测 AABB - AABB collision
+    void DoCollisions();
 };
 
 #endif /* Game_hpp */
